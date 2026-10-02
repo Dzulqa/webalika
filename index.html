@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Alika! 💖</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --baby-pink: #fbcfe8;
+            --soft-pink: #f472b6;
+            --deep-pink: #db2777;
+            --rose-pastel: #fff1f2;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #fdf2f8 0%, #fbcfe8 50%, #f472b6 100%);
+            color: #831843;
+            overflow-x: hidden;
+        }
+
+        .font-serif-title {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .font-script {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Floating background elements */
+        .bg-heart {
+            position: absolute;
+            pointer-events: none;
+            animation: floatUp 10s infinite linear;
+            opacity: 0.6;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0.3) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Glassmorphism Effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px rgba(219, 39, 119, 0.12);
+        }
+
+        /* Envelope Styles */
+        .envelope-wrapper {
+            perspective: 1000px;
+        }
+        .envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: #f472b6;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            box-shadow: 0 15px 35px rgba(219, 39, 119, 0.25);
+            cursor: pointer;
+            transition: transform 0.4s ease;
+        }
+        .envelope:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+        .envelope .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 110px solid #db2777;
+            transform-origin: top;
+            transition: transform 0.6s ease;
+            z-index: 3;
+        }
+        .envelope.open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+        .envelope .letter {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            width: 270px;
+            height: 170px;
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            transition: transform 0.6s ease;
+            z-index: 2;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .envelope.open .letter {
+            transform: translateY(-90px) scale(1.05);
+            z-index: 4;
+        }
+
+        /* 3D Flip Card */
+        .flip-card {
+            background-color: transparent;
+            perspective: 1000px;
+            height: 220px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+        .flip-card-front {
+            background: linear-gradient(135deg, #ffffff 0%, #fce7f3 100%);
+            border: 2px solid #fbcfe8;
+            box-shadow: 0 10px 25px rgba(244, 114, 182, 0.15);
+        }
+        .flip-card-back {
+            background: linear-gradient(135deg, #f472b6 0%, #db2777 100%);
+            color: white;
+            transform: rotateY(180deg);
+            box-shadow: 0 10px 25px rgba(219, 39, 119, 0.3);
+        }
+
+        /* Cake & Candle CSS Animation */
+        .cake-container {
+            position: relative;
+            width: 200px;
+            height: 180px;
+        }
+        .plate {
+            width: 220px;
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 0;
+            left: -10px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        .layer-bottom {
+            width: 180px;
+            height: 60px;
+            background: #f472b6;
+            border-radius: 15px 15px 0 0;
+            position: absolute;
+            bottom: 15px;
+            left: 10px;
+        }
+        .layer-top {
+            width: 140px;
+            height: 50px;
+            background: #fbcfe8;
+            border-radius: 15px 15px 0 0;
+            position: absolute;
+            bottom: 75px;
+            left: 30px;
+        }
+        .icing {
+            width: 140px;
+            height: 15px;
+            background: white;
+            border-radius: 10px;
+            position: absolute;
+            bottom: 115px;
+            left: 30px;
+        }
+        .candle {
+            width: 12px;
+            height: 35px;
+            background: linear-gradient(to bottom, #60a5fa, #3b82f6);
+            position: absolute;
+            bottom: 130px;
+            left: 94px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .flame {
+            width: 14px;
+            height: 22px;
+            background: #f59e0b;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -20px;
+            left: -1px;
+            box-shadow: 0 0 15px #fbbf24;
+            animation: flicker 0.6s infinite alternate;
+            transition: opacity 0.3s ease;
+        }
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); }
+            100% { transform: scale(1.15) rotate(2deg); }
+        }
+        .flame.blown-out {
+            opacity: 0;
+            animation: none;
+        }
+
+        /* Polaroid Hover Effect */
+        .polaroid {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: white;
+            padding: 12px 12px 24px 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+        .polaroid:hover {
+            transform: scale(1.05) rotate(0deg) !important;
+            box-shadow: 0 20px 30px rgba(219, 39, 119, 0.25);
+            z-index: 10;
+        }
+
+        /* Custom Audio Control Animation */
+        .pulse-heart {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+    </style>
+</head>
+<body class="min-h-screen relative pb-16">
+
+    <div id="heart-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+    <div class="fixed top-5 right-5 z-50">
+        <button id="music-toggle" class="glass-card flex items-center gap-3 px-4 py-2.5 rounded-full shadow-lg border border-pink-200 hover:bg-white/80 transition-all">
+            <span id="music-icon" class="text-pink-600 text-lg"><i class="fas fa-music"></i></span>
+            <span id="music-text" class="text-xs font-semibold text-pink-700 uppercase tracking-wider">Play Music</span>
+            <span class="w-3 h-3 rounded-full bg-pink-400 animate-ping"></span>
+        </button>
+        <!-- Background Music (Romantic Acoustic Track) -->
+        <audio id="bg-music" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-acoustic-guitar-113540.mp3"></audio>
+    </div>
+
+    <header class="relative z-10 pt-16 pb-10 px-4 text-center max-w-4xl mx-auto">
+        <div class="inline-block mb-3 px-4 py-1.5 rounded-full glass-card border border-pink-300 text-pink-600 font-semibold text-sm tracking-wide shadow-sm animate-bounce">
+            ✨ Special Day for Someone Special ✨
+        </div>
+        <h1 class="font-serif-title text-4xl sm:text-6xl md:text-7xl font-extrabold text-pink-700 tracking-tight leading-tight mb-4">
+            Happy Birthday, <span class="font-script text-pink-500 underline decoration-pink-300 decoration-wavy">Alika</span> 💖
+        </h1>
+        <p class="text-pink-800 text-base sm:text-xl font-light max-w-xl mx-auto mb-8 leading-relaxed">
+            Hari ini milik kamu! Semoga harimu dipenuhi kebahagiaan, senyuman indah, dan kehangatan cinta tanpa batas.
+        </p>
+
+        <!-- Countdown / Celebration Timer -->
+        <div class="grid grid-cols-4 gap-2 sm:gap-4 max-w-md mx-auto mb-10">
+            <div class="glass-card p-3 sm:p-4 rounded-2xl text-center">
+                <span id="days" class="block font-bold text-2xl sm:text-3xl text-pink-600">00</span>
+                <span class="text-xs text-pink-400 uppercase font-medium">Hari</span>
+            </div>
+            <div class="glass-card p-3 sm:p-4 rounded-2xl text-center">
+                <span id="hours" class="block font-bold text-2xl sm:text-3xl text-pink-600">00</span>
+                <span class="text-xs text-pink-400 uppercase font-medium">Jam</span>
+            </div>
+            <div class="glass-card p-3 sm:p-4 rounded-2xl text-center">
+                <span id="minutes" class="block font-bold text-2xl sm:text-3xl text-pink-600">00</span>
+                <span class="text-xs text-pink-400 uppercase font-medium">Menit</span>
+            </div>
+            <div class="glass-card p-3 sm:p-4 rounded-2xl text-center">
+                <span id="seconds" class="block font-bold text-2xl sm:text-3xl text-pink-600">00</span>
+                <span class="text-xs text-pink-400 uppercase font-medium">Detik</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="relative z-10 max-w-6xl mx-auto px-4 py-10">
+        <div class="text-center mb-12">
+            <h2 class="font-serif-title text-3xl sm:text-4xl font-bold text-pink-800">Kenangan Indah Bersama Alika 📸</h2>
+            <p class="text-pink-600 text-sm mt-2">Setiap detik bersamamu adalah momen favoritku. (Klik foto untuk memperbesar)</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-4">
+            <!-- Photo Slot 1 -->
+            <div class="polaroid rounded-lg -rotate-3 cursor-pointer" onclick="openLightbox('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80', 'Senyum manis kamu yang selalu menghiasi hariku ✨')">
+                <div class="overflow-hidden rounded-md h-72 bg-pink-100 mb-3">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="Alika Photo 1" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" onerror="this.src='https://placehold.co/400x500/fbcfe8/db2777?text=Foto+Alika+1'">
+                </div>
+                <p class="font-script text-xl text-center text-pink-700">Senyum Cantikmu 💕</p>
+            </div>
+
+            <!-- Photo Slot 2 -->
+            <div class="polaroid rounded-lg rotate-2 cursor-pointer" onclick="openLightbox('https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80', 'Momen berharga bersama princess kesayangan.')">
+                <div class="overflow-hidden rounded-md h-72 bg-pink-100 mb-3">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80" alt="Alika Photo 2" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" onerror="this.src='https://placehold.co/400x500/fbcfe8/db2777?text=Foto+Alika+2'">
+                </div>
+                <p class="font-script text-xl text-center text-pink-700">Momen Terindah 🌸</p>
+            </div>
+
+            <!-- Photo Slot 3 -->
+            <div class="polaroid rounded-lg -rotate-2 cursor-pointer" onclick="openLightbox('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80', 'Terima kasih telah hadir dan melengkapi hidupku.')">
+                <div class="overflow-hidden rounded-md h-72 bg-pink-100 mb-3">
+                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80" alt="Alika Photo 3" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" onerror="this.src='https://placehold.co/400x500/fbcfe8/db2777?text=Foto+Alika+3'">
+                </div>
+                <p class="font-script text-xl text-center text-pink-700">My Favorite Person 🌷</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="relative z-10 max-w-4xl mx-auto px-4 py-16 text-center">
+        <h2 class="font-serif-title text-3xl sm:text-4xl font-bold text-pink-800 mb-3">Surat Cinta Untuk Alika 💌</h2>
+        <p class="text-pink-600 text-sm mb-12">Klik amplop di bawah untuk membuka pesan spesialku!</p>
+
+        <div class="flex justify-center items-center">
+            <div class="envelope-wrapper">
+                <div id="envelope" class="envelope" onclick="toggleEnvelope()">
+                    <div class="flap"></div>
+                    <div class="letter">
+                        <i class="fas fa-heart text-pink-500 text-3xl mb-2 pulse-heart"></i>
+                        <h3 class="font-script text-2xl font-bold text-pink-700">Happy Birthday My Love!</h3>
+                        <p class="text-xs text-pink-600 mt-2 leading-relaxed">
+                            Semoga di usiamu yang baru ini, segala impian dan cita-citamu tercapai. Aku akan selalu ada mendukungmu di setiap langkah.
+                        </p>
+                        <button onclick="openFullLetter(event)" class="mt-3 px-3 py-1 bg-pink-500 text-white rounded-full text-xs hover:bg-pink-600 transition-colors shadow">
+                            Baca Selengkapnya
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="relative z-10 max-w-5xl mx-auto px-4 py-12">
+        <div class="text-center mb-10">
+            <h2 class="font-serif-title text-3xl sm:text-4xl font-bold text-pink-800">Alasan Aku Sayang Alika 💖</h2>
+            <p class="text-pink-600 text-sm mt-2">Arahkan kursor / sentuh kartu untuk melihat jawabannya!</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <!-- Card 1 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fas fa-smile-beam text-4xl text-pink-500 mb-3"></i>
+                        <h3 class="font-bold text-lg text-pink-700">Senyumanmu</h3>
+                        <p class="text-xs text-pink-400 mt-1">Sentuh untuk buka ➔</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p class="text-sm leading-relaxed">
+                            Senyum kamu punya keajaiban buat bikin hari terburukku langsung terasa tenang dan penuh warna!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fas fa-heart text-4xl text-pink-500 mb-3"></i>
+                        <h3 class="font-bold text-lg text-pink-700">Hati yang Baik</h3>
+                        <p class="text-xs text-pink-400 mt-1">Sentuh untuk buka ➔</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p class="text-sm leading-relaxed">
+                            Kebaikan dan kepedulian kamu ke orang-orang di sekitar bikin aku makin kagum setiap harinya.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fas fa-sparkles text-4xl text-pink-500 mb-3"></i>
+                        <h3 class="font-bold text-lg text-pink-700">Selalu Ada</h3>
+                        <p class="text-xs text-pink-400 mt-1">Sentuh untuk buka ➔</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p class="text-sm leading-relaxed">
+                            Terima kasih sudah menjadi pendengar terbaik dan selalu ada dalam suka maupun duka.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="relative z-10 max-w-xl mx-auto px-4 py-16 text-center">
+        <div class="glass-card p-8 rounded-3xl border border-pink-200">
+            <h2 class="font-serif-title text-3xl font-bold text-pink-800 mb-2">Tiup Lilinnya! 🎂</h2>
+            <p class="text-pink-600 text-sm mb-8">Make a wish lalu klik pada nyala lilin untuk meniupnya!</p>
+
+            <div class="flex justify-center mb-6">
+                <div class="cake-container">
+                    <div class="plate"></div>
+                    <div class="layer-bottom"></div>
+                    <div class="layer-top"></div>
+                    <div class="icing"></div>
+                    <div class="candle" onclick="blowOutCandle()">
+                        <div id="candle-flame" class="flame"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cake-wish-msg" class="hidden animate-fade-in mt-4">
+                <p class="font-script text-2xl text-pink-700 font-bold">🎉 Happy Birthday Alika! 🎉</p>
+                <p class="text-xs text-pink-600 mt-1">Semua doa terbaikku menyertaimu selamanya!</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="lightbox" class="fixed inset-0 z-50 bg-black/80 hidden flex justify-center items-center p-4" onclick="closeLightbox()">
+        <div class="relative max-w-2xl w-full glass-card p-4 rounded-2xl bg-white/90" onclick="event.stopPropagation()">
+            <button onclick="closeLightbox()" class="absolute top-3 right-3 text-gray-500 hover:text-pink-600 text-2xl font-bold">&times;</button>
+            <img id="lightbox-img" src="" alt="Enlarged view" class="w-full max-h-[70vh] object-cover rounded-xl mb-4">
+            <p id="lightbox-caption" class="text-center font-serif-title text-pink-800 text-lg font-medium"></p>
+        </div>
+    </div>
+
+    <div id="letter-modal" class="fixed inset-0 z-50 bg-black/70 hidden flex justify-center items-center p-4">
+        <div class="relative max-w-lg w-full glass-card p-6 sm:p-8 rounded-3xl bg-white/95 max-h-[85vh] overflow-y-auto">
+            <button onclick="closeFullLetter()" class="absolute top-4 right-4 text-pink-400 hover:text-pink-700 text-2xl font-bold">&times;</button>
+            
+            <div class="text-center mb-6">
+                <i class="fas fa-heart text-pink-500 text-4xl mb-2"></i>
+                <h3 class="font-serif-title text-2xl sm:text-3xl font-bold text-pink-800">Untuk Alika Tersayang ❤️️</h3>
+            </div>
+            
+            <div class="text-pink-800 space-y-4 text-sm sm:text-base leading-relaxed font-light">
+                <p><strong>Selamat ulang tahun, sayang!</strong></p>
+                <p>
+                    Hari ini adalah hari yang sangat spesial, tidak hanya untukmu tapi juga untukku. Terima kasih telah lahir ke dunia ini dan membagikan indahnya senyumanmu bersamaku.
+                </p>
+                <p>
+                    Setiap momen yang kita lewati bersama selalu terasa sangat berharga. Kamu adalah alasan di balik tawa dan kebahagiaanku. Semoga di usiamu yang baru ini, kamu semakin bahagia, sehat selalu, dan dikelilingi oleh hal-hal baik.
+                </p>
+                <p>
+                    Ingat ya, apapun yang terjadi, aku akan selalu ada di sisimu, siap menjadi pendukung nomormu satu!
+                </p>
+                <p class="font-script text-2xl text-right text-pink-600 pt-4">
+                    Dengan seluruh cintaku,<br>
+                    -[Namamu] ❤️
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Floating Hearts Background Generator
+        function createFloatingHearts() {
+            const container = document.getElementById('heart-container');
+            const heartIcons = ['💖', '🌸', '✨', '💕', '🌷'];
+            
+            for (let i = 0; i < 25; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'bg-heart';
+                heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 5 + 6) + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                container.appendChild(heart);
+            }
+        }
+
+        // Countdown Timer Logic
+        function startTimer() {
+            // Live clock simulation / celebration counter
+            let sec = 0;
+            setInterval(() => {
+                sec++;
+                const now = new Date();
+                document.getElementById('days').innerText = String(now.getDate()).padStart(2, '0');
+                document.getElementById('hours').innerText = String(now.getHours()).padStart(2, '0');
+                document.getElementById('minutes').innerText = String(now.getMinutes()).padStart(2, '0');
+                document.getElementById('seconds').innerText = String(now.getSeconds()).padStart(2, '0');
+            }, 1000);
+        }
+
+        // Music Player Toggle
+        const musicBtn = document.getElementById('music-toggle');
+        const bgMusic = document.getElementById('bg-music');
+        const musicIcon = document.getElementById('music-icon');
+        const musicText = document.getElementById('music-text');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (!isPlaying) {
+                bgMusic.play().then(() => {
+                    isPlaying = true;
+                    musicIcon.innerHTML = '<i class="fas fa-pause text-pink-600"></i>';
+                    musicText.innerText = 'Pause Music';
+                }).catch(err => console.log('Audio playback prevented:', err));
+            } else {
+                bgMusic.pause();
+                isPlaying = false;
+                musicIcon.innerHTML = '<i class="fas fa-music text-pink-600"></i>';
+                musicText.innerText = 'Play Music';
+            }
+        });
+
+        // Envelope Interactive Toggle
+        function toggleEnvelope() {
+            const env = document.getElementById('envelope');
+            env.classList.toggle('open');
+        }
+
+        // Full Letter Modal
+        function openFullLetter(e) {
+            e.stopPropagation();
+            document.getElementById('letter-modal').classList.remove('hidden');
+        }
+
+        function closeFullLetter() {
+            document.getElementById('letter-modal').classList.add('hidden');
+        }
+
+        // Photo Lightbox
+        function openLightbox(src, caption) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox-caption').innerText = caption;
+            document.getElementById('lightbox').classList.remove('hidden');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.add('hidden');
+        }
+
+        // Blow out Candle Logic & Confetti
+        let candleBlown = false;
+        function blowOutCandle() {
+            if (candleBlown) return;
+            candleBlown = true;
+
+            const flame = document.getElementById('candle-flame');
+            flame.classList.add('blown-out');
+
+            // Show Wish Message
+            document.getElementById('cake-wish-msg').classList.remove('hidden');
+
+            // Trigger Confetti Explosion
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    colors: ['#f472b6', '#fbcfe8', '#db2777', '#ffffff', '#f59e0b']
+                });
+
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 60,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 }
+                    });
+                    confetti({
+                        particleCount: 60,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 }
+                    });
+                }, 300);
+            }
+        }
+
+        // Initialization
+        window.onload = function() {
+            createFloatingHearts();
+            startTimer();
+        };
+    </script>
+</body>
+</html>
